@@ -1,10 +1,14 @@
 $(document).ready( function() {
 	$('.unanswered-getter').submit( function(event){
 		// zero out results if previous search has run
-		$('.results').html('');
+		// $('.results').html('');
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
+	});
+	$('.inspiration-getter').submit(function(event){
+		var tags = $(this).find("input[name='answerers']").val();
+		topAnswerer(tags);
 	});
 });
 
@@ -45,17 +49,20 @@ var showAnswerer = function(answerer) {
 
 	// Set answerer properties in the results
 	var nameElem = result.find('.answerer-name a');
-	nameElem.attr('href', answerer.link);
-	nameElem.text(answerer.title);
+	nameElem.attr('href', answerer.user.link);
+	nameElem.text(answerer.user.displ);
 
 	var rep = result.find('.answerer-rep');
-	rep.text(answerer.reputation);
+	rep.text(answerer.user.reputation);
 
 	var acceptRate = result.find('.answerer-accept-rate');
-	acceptRate.text(answerer.accept_rate);
-
-	var profileImage = result.find('.answerer-profile-img');
-	profileImage.text(answerer.profile_image);
+	if(answerer.user.accept_rate == undefined) {
+		acceptRate.text('0');
+	} else {
+		acceptRate.text(answerer.user.accept_rate);
+	}
+	var profileImage = result.find('.answerer-profile-img img');
+	profileImage.attr('src', answerer.user.profile_image);
 
 	return result;
 
@@ -64,6 +71,7 @@ var showAnswerer = function(answerer) {
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
 var showSearchResults = function(query, resultNum) {
+	$('.results').html('');
 	var results = resultNum + ' results for <strong>' + query + "</strong>";
 	return results;
 };
@@ -99,8 +107,8 @@ var getUnanswered = function(tags) {
 		$('.search-results').html(searchResults);
 
 		$.each(result.items, function(i, item) {
-			var answerer = showAnswerer(item);
-			$('.results').append(answerer);
+			var unanswered = showQuestion(item);
+			$('.results').append(unanswered);
 		});
 	})
 	.fail(function(jqXHR, error, errorThrown){
@@ -113,12 +121,11 @@ var getUnanswered = function(tags) {
 var topAnswerer = function(tags) {
 	var request = {
 				tagged: tags,
-				site: 'stackoverflow',
-				period: 'all_time'
+				site: 'stackoverflow'
 				};
 
 	var result = $.ajax({
-					url: 'http://api.stackexchange.com/2.2/tags/{tag}/top-answerers/all_time?',
+					url: 'http://api.stackexchange.com/2.2/tags/' + request.tagged + '/top-answerers/all_time',
 					data: request,
 					dataType: "jsonp",
 					type: "GET",
