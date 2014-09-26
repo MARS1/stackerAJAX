@@ -17,8 +17,9 @@
 				<p>Sometimes, you also need some inspiration. This page also lets you search for the top answerers for a tag. If you want to rise to the top ranks for a topic, see how many reputation points you'll need to aim for!</p>
 			</div>
 		</div>
+		<!-- /.intro -->
 		<hr>
-		<div class="stack">	
+		<div class="stack">
 			<h3>Get Unanswered Questions</h3>
 			<p>Find unanswered questions by tag. For multiple tags, use a semi-colon to separate.</p>
 			<form class="unanswered-getter" onsubmit="return false;">
@@ -31,11 +32,15 @@
 				<input type="submit" value="Submit">
 			</form>
 		</div>
+		<!-- /.stack -->
+
 		<div class="results-container">
 			<div class="search-results"></div>
 			<div class="results"></div>
 		</div>
 	</div>
+	<!-- /.container -->
+
 	<div class="templates hidden">
 		<dl class="result question">
 			<dt>Question</dt>
@@ -46,6 +51,16 @@
 				<dd class="viewed"></dd>
 			<dt>Asker</dt>
 				<dd class="asker"></dd>
+		</dl>
+		<dl class="result answerer">
+			<dt>Top Answerer:</dt>
+				<dd class="answerer-name"><a href="" target="_blank"></a></dd>
+			<dt>Reputation</dt>
+				<dd class="answerer-rep"></dd>
+			<dt>Accept Rate</dt>
+				<dd class="answerer-accept-rate"></dd>
+			<dt>Profile Image</dt>
+				<dd class="answerer-profile-img"></dd>
 		</dl>
 		<div class="error">
 			<p>Uh-oh! Something went wrong with your request. Here's what we know:</p>
